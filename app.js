@@ -2,6 +2,7 @@ const mysql = require('mysql');
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
+const parser = require('body-parser')
 
 const app = express();
 
@@ -13,48 +14,50 @@ const connection = mysql.createConnection({
     database: 'login'
 });
 
+//necessário para as requisições
+app.use(parser.json());
+
 //função de login
 app.post('/autenticator', (req, res) => {
-    let user = request.body.username;
-	let pwd = request.body.password;
+    let user = req.body.username;
+	let pwd = req.body.password;
 
     if (user && pwd){
         connection.query('SELECT * FROM users WHERE username = ? AND password = ?', [user, pwd], function(error, results, fields){
-            if (results.length > 0){
-                request.session.loggedin = true;
-                request.session.username = user;
-                response.redirect('/home');
+            //if (results.length > 0){
+            if(false){
+                //autentique o usuário
             } else {
-                response.send('Incorrect Username and/or Password!');
+                res.send('Incorrect Username and/or Password!');
             }
-            response.end();
+            res.end();
         });
     }
     else{
-        response.send('Dados inválidos.');
-		response.end();
+        res.send('Dados inválidos.');
+		res.end();
     }
 });
 
 //função de registro
 app.post('/registrar', (req, res) => {
-    let user = request.body.username;
-    let pwd = request.body.password;
-    let email = request.body.email;
+    let user = req.body.username;
+    let pwd = req.body.password;
+    let email = req.body.email;
 
     if (user && pwd && email){
         connection.query('INSERT INTO users (username, password, email) VALUES (?, ?, ?)', [user, pwd, email], function(error, results, fields){
             if (error){
-                response.send('Erro ao registrar usuário.');
+                res.send('Erro ao registrar usuário.');
             } else {
-                response.send('Usuário registrado com sucesso.');
+                res.send('Usuário registrado com sucesso.');
             }
-            response.end();
+            res.end();
         });
     }
     else{
-        response.send('Houve um problema.');
-        response.end();
+        res.send('Houve um problema.');
+        res.end();
     }
 });
 
