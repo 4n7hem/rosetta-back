@@ -14,7 +14,7 @@ const connection = mysql.createConnection({
 });
 
 //função de login
-app.get('/autenticator', (req, res) => {
+app.post('/autenticator', (req, res) => {
     let user = request.body.username;
 	let pwd = request.body.password;
 
@@ -37,7 +37,7 @@ app.get('/autenticator', (req, res) => {
 });
 
 //função de registro
-app.get('/registrar', (req, res) => {
+app.post('/registrar', (req, res) => {
     let user = request.body.username;
     let pwd = request.body.password;
     let email = request.body.email;
@@ -57,3 +57,6 @@ app.get('/registrar', (req, res) => {
         response.end();
     }
 });
+
+
+app.listen(3000);
