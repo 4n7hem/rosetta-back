@@ -6,13 +6,9 @@ const parser = require('body-parser')
 
 const app = express();
 
-//tá, eu vou usar o mysql mesmo
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'login'
-});
+//conecte no mongodb
+const MongoClient = require('mongodb').MongoClient;
+const url = "mongodb://localhost:27017/";
 
 //necessário para as requisições
 app.use(parser.json());
@@ -23,14 +19,21 @@ app.post('/autenticator', (req, res) => {
 	let pwd = req.body.password;
 
     if (user && pwd){
-        connection.query('SELECT * FROM users WHERE username = ? AND password = ?', [user, pwd], function(error, results, fields){
-            //if (results.length > 0){
-            if(false){
-                //autentique o usuário
-            } else {
-                res.send('Incorrect Username and/or Password!');
-            }
-            res.end();
+        MongoClient.connect(url, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db("mydb");
+            var query = { username: user, password: pwd };
+            dbo.collection("users").find(query).toArray(function(err, result) {
+                if (err) throw err;
+                if (result.length > 0){
+                    req.session.loggedin = true;
+                    req.session.username = user;
+                    res.redirect('/home');
+                } else {
+                    res.send('Incorrect Username and/or Password!');
+                }			
+                res.end();
+            });
         });
     }
     else{
@@ -44,15 +47,17 @@ app.post('/registrar', (req, res) => {
     let user = req.body.username;
     let pwd = req.body.password;
     let email = req.body.email;
-
+    
     if (user && pwd && email){
-        connection.query('INSERT INTO users (username, password, email) VALUES (?, ?, ?)', [user, pwd, email], function(error, results, fields){
-            if (error){
-                res.send('Erro ao registrar usuário.');
-            } else {
-                res.send('Usuário registrado com sucesso.');
-            }
-            res.end();
+        MongoClient.connect(url, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db("mydb");
+            var query = { username: user, password: pwd, email: email };
+            dbo.collection("users").insertOne(query, function(err, result) {
+                if (err) throw err;
+                console.log("1 document inserted");
+                db.close();
+            });
         });
     }
     else{
