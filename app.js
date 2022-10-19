@@ -9,6 +9,8 @@ const app = express();
 const MongoClient = require('mongodb').MongoClient;
 const url = "mongodb://localhost:27017/";
 
+let client = new MongoClient(url, { useNewUrlParser: true, monitorCommands: true });
+
 //necessário para as requisições
 app.use(parser.json());
 
@@ -18,27 +20,24 @@ app.post('/autenticator', (req, res) => {
 	let pwd = req.body.password;
 
     if (user && pwd){
-        MongoClient.connect(url, function(err, db) {
+        var dbo = client.db("mydb");
+        dbo.collection("users").findOne({username: user, password: pwd}, function(err, result) {
             if (err) throw err;
-            var dbo = db.db("mydb");
-            var query = { username: user, password: pwd };
-            dbo.collection("users").find(query).toArray(function(err, result) {
-                if (err) throw err;
-                if (result.length > 0){
-                    req.session.loggedin = true;
-                    req.session.username = user;
-                    res.redirect('/home');
-                } else {
-                    res.send('Incorrect Username and/or Password!');
-                }			
-                res.end();
-            });
+            if(result){
+                req.session.loggedin = true;
+                req.session.username = user;
+                res.redirect('/home');
+            }else{
+                res.send('Usuário e/ou senha incorretos!');
+            }
+            res.end();
         });
     }
     else{
-        res.send('Dados inválidos.');
-		res.end();
+        res.send('Por favor, insira nome de usuário e senha!');
+        res.end();
     }
+   
 });
 
 //função de registro
@@ -48,15 +47,12 @@ app.post('/registrar', (req, res) => {
     let email = req.body.email;
     
     if (user && pwd && email){
-        MongoClient.connect(url, function(err, db) {
-            if (err) throw err;
-            var dbo = db.db("mydb");
+            var dbo = client.db("mydb");
             var query = { username: user, password: pwd, email: email };
             dbo.collection("users").insertOne(query, function(err, result) {
                 if (err) throw err;
                 console.log("1 document inserted");
                 db.close();
-            });
         });
     }
     else{
