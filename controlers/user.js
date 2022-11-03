@@ -2,6 +2,11 @@ const client = require('../Config/db')
 const session = require('express-session');
 
 module.exports = {
+
+    teste(req,res){
+        console.log('teste'); 
+        return 'testado'
+    },
     async login(req, res){ 
         let user = req.body.username;
         let pwd = req.body.password;
