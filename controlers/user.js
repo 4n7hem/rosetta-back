@@ -14,7 +14,7 @@ module.exports = {
         if (user && pwd){
             var dbo = client.db("mydb");
             dbo.collection("users").findOne({username: user, password: pwd}, function(err, result) {
-                if (err) throw err;
+                if (err) return('deu erro');
                 if(result){
                     req.session.loggedin = true;
                     req.session.username = user;
