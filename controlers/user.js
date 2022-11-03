@@ -7,7 +7,7 @@ module.exports = {
         console.log('teste'); 
         return 'testado'
     },
-    async login(req, res){ 
+     login(req, res){ 
         let user = req.body.username;
         let pwd = req.body.password;
 
@@ -31,7 +31,7 @@ module.exports = {
             res.end();
         }
     },
-    async registrar (req, res){
+     registrar (req, res){
         let user = req.body.username;
         let pwd = req.body.password;
         let email = req.body.email;   
@@ -50,7 +50,7 @@ module.exports = {
             res.end();
         }
     },
-    async findprofile (req, res) {
+     findprofile (req, res) {
         let user = req.query.username;
         if (user){
             var dbo = client.db("mydb");
