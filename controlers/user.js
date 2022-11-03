@@ -1,4 +1,5 @@
-const client = require('./Config/db')
+const client = require('../Config/db')
+const session = require('express-session');
 
 module.exports = {
     async login(req, res){ 
