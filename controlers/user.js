@@ -18,8 +18,10 @@ module.exports = {
                 if(result){
                     req.session.loggedin = true;
                     req.session.username = user;
-                    return "Usuario cadastrado com sucesso" ;
+                    res.send("Usuario logado com sucesso");
                     //res.redirect('/home');
+                    return
+                    
                 }else{
                     return "Usuário e/ou senha incorretos!" ;
                 }
@@ -41,7 +43,7 @@ module.exports = {
                 dbo.collection("users").insertOne(query, function(err, result) {
                     if (err) throw err;
                     console.log("1 document inserted");
-                    return 'Sucesso no cadastro. Redirecionando...';
+                    res.send('Sucess');
                     res.end();                
             });
         }
@@ -57,7 +59,8 @@ module.exports = {
             dbo.collection("users").findOne({username: user}, function(err, result) {
                 if (err) throw err;
                 if(result){
-                    return result;
+                    res.send(result)
+                    return
                 }else{
                     return 'Usuário não encontrado!';
                 }

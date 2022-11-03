@@ -18,11 +18,8 @@ routes.all('/*', async (req, res) => {
     splittedUrl = req.url.split(regex);
     func = controllers[splittedUrl[1]][splittedUrl[2]];
     if(func){
-        resp = func(req, res)
-        //if (resp.status) res.status(resp.status)
-        return res.json({
-            message: resp
-        });
+        resp = func(req, res)        
+        return
     }else{
         return res.json({
             message: 'Hello World :)' 
