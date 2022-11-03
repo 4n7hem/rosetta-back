@@ -14,21 +14,21 @@ module.exports = {
         if (user && pwd){
             var dbo = client.db("mydb");
             dbo.collection("users").findOne({username: user, password: pwd}, function(err, result) {
-                if (err) return('deu erro');
+                if (err) return "deu erro" ;
                 if(result){
                     req.session.loggedin = true;
                     req.session.username = user;
-                    return 'Usuario cadastrado com sucesso';
+                    return "Usuario cadastrado com sucesso" ;
                     //res.redirect('/home');
                 }else{
-                    return 'Usuário e/ou senha incorretos!';
+                    return "Usuário e/ou senha incorretos!" ;
                 }
-                res.end();
+                //res.end();
             });
         }
         else{
-           return 'Por favor, insira nome de usuário e senha!';
-            res.end();
+           return "Por favor, insira nome de usuário e senha!";
+            //res.end();
         }
     },
      registrar (req, res){
