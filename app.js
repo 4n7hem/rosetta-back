@@ -14,6 +14,15 @@ let client = new MongoClient(url, { useNewUrlParser: true, monitorCommands: true
 //necessário para as requisições
 app.use(parser.json());
 
+app.use(session({
+    secret: 'keyboard cat',
+    username: 'noname',
+    loggedin: false,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true }
+  }))
+
 //função de login
 app.post('/autenticator', (req, res) => {
     let user = req.body.username;
@@ -26,7 +35,7 @@ app.post('/autenticator', (req, res) => {
             if(result){
                 req.session.loggedin = true;
                 req.session.username = user;
-                res.redirect('/home');
+                //res.redirect('/home');
             }else{
                 res.send('Usuário e/ou senha incorretos!');
             }
@@ -52,11 +61,33 @@ app.post('/registrar', (req, res) => {
             dbo.collection("users").insertOne(query, function(err, result) {
                 if (err) throw err;
                 console.log("1 document inserted");
-                db.close();
+                res.send('Sucesso no cadastro. Redirecionando...');
+                res.end();                
         });
     }
     else{
         res.send('Houve um problema.');
+        res.end();
+    }
+});
+
+//função de procurar perfil
+app.get('/findprofile', (req, res) => {
+    let user = req.query.username;
+    if (user){
+        var dbo = client.db("mydb");
+        dbo.collection("users").findOne({username: user}, function(err, result) {
+            if (err) throw err;
+            if(result){
+                res.send(result);
+            }else{
+                res.send('Usuário não encontrado!');
+            }
+            res.end();
+        });
+    }
+    else{
+        res.send('Um erro aconteceu');
         res.end();
     }
 });
