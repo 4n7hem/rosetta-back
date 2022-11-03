@@ -2,14 +2,9 @@ const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const parser = require('body-parser')
-
+const client = require('./Config/db')
 const app = express();
 
-//conecte no mongodb
-const MongoClient = require('mongodb').MongoClient;
-const url = "mongodb://localhost:27017/";
-
-let client = new MongoClient(url, { useNewUrlParser: true, monitorCommands: true });
 
 //necessário para as requisições
 app.use(parser.json());
