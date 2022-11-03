@@ -1,12 +1,13 @@
 const express = require('express');
 const cors = require('cors');
-const session = require('express-session');
+const cookie = require('./Config/cookie')
 //const path = require('path');
 //const parser = require('body-parser')
 const routes = require('./routes'); 
 const { serverApi } = require('./Config/db');
 const app = express();
 
+app.use(cookie)
 app.use(cors());
 app.use(express.json());
 
