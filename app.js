@@ -1,12 +1,23 @@
 const express = require('express');
+const cors = require('cors');
 const session = require('express-session');
-const path = require('path');
-const parser = require('body-parser')
-const client = require('./Config/db')
+//const path = require('path');
+//const parser = require('body-parser')
+const routes = require('./routes'); 
+const { serverApi } = require('./Config/db');
 const app = express();
 
+app.use(cors());
+app.use(express.json());
+
+app.use(routes);
+
+app.listen(3000, () => {
+    console.log("Listening on " + port);
+});
 
 //necessário para as requisições
+/*
 app.use(parser.json());
 
 app.use(session({
@@ -86,6 +97,5 @@ app.get('/findprofile', (req, res) => {
         res.end();
     }
 });
+*/
 
-
-app.listen(3000);
