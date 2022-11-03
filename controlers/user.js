@@ -13,16 +13,16 @@ module.exports = {
                 if(result){
                     req.session.loggedin = true;
                     req.session.username = user;
-                    return {message:'Usuario cadastrado com sucesso'};
+                    return 'Usuario cadastrado com sucesso';
                     //res.redirect('/home');
                 }else{
-                    return {message:'Usuário e/ou senha incorretos!'};
+                    return 'Usuário e/ou senha incorretos!';
                 }
                 res.end();
             });
         }
         else{
-           return {message:'Por favor, insira nome de usuário e senha!'};
+           return 'Por favor, insira nome de usuário e senha!';
             res.end();
         }
     },
@@ -36,12 +36,12 @@ module.exports = {
                 dbo.collection("users").insertOne(query, function(err, result) {
                     if (err) throw err;
                     console.log("1 document inserted");
-                    return {message: 'Sucesso no cadastro. Redirecionando...'};
+                    return 'Sucesso no cadastro. Redirecionando...';
                     res.end();                
             });
         }
         else{
-            return {message:'Houve um problema.'};
+            return 'Houve um problema.';
             res.end();
         }
     },
@@ -52,15 +52,15 @@ module.exports = {
             dbo.collection("users").findOne({username: user}, function(err, result) {
                 if (err) throw err;
                 if(result){
-                    return {message: result};
+                    return result;
                 }else{
-                    return {message: 'Usuário não encontrado!'};
+                    return 'Usuário não encontrado!';
                 }
                 res.end();
             });
         }
         else{
-            return {message: 'Um erro aconteceu'};
+            return  'Um erro aconteceu' ;
             res.end();
         }
     },
