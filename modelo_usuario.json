@@ -1,0 +1,32 @@
+{    
+"username":"bingus",
+"password":"dingus",
+"email":"aaaaaaaa@gmail.com",
+"nome_publico": "Karen Nascimento",
+"biografia": "Professora de inglês e português certificada e especializada com experiência em desenvolvimento pessoal e profissional.",
+"linguas": ["Inglês", "Português"],
+"portfolio": [
+    {
+        "nome": "Curso de inglês",
+        "link": "https://www.youtube.com/watch?v=QH2-TGUlwu4"
+    },
+    {
+        "nome": "Curso de português",
+        "link": "https://www.youtube.com/watch?v=QH2-TGUlwu4"
+    }
+],
+"avaliacoes":
+    [
+        {        
+            "username":1,
+            "nota":5,
+            "comentario":"muito rápida e tradução muito boa, me ajudou muito :)"
+        },        
+        {
+            "username":2,
+            "nota":4,
+            "comentario":"traduziu muito bem uma música que eu precisava"
+        }
+        
+    ]
+}
